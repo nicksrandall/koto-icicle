@@ -1,6 +1,6 @@
 {
   "name": "koto.Icicle",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "A koto chart written in ES6",
   "main": "dist/chart.js",
   "scripts": {
