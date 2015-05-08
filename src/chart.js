@@ -1,5 +1,5 @@
-import d3 from 'bower_components/d3/d3.js';
-import koto from 'bower_components/Koto/dist/koto.js';
+import d3 from 'd3';
+import koto from 'koto';
 import Tooltip from './Tooltip';
 import hierarchy from './hierarchy';
 
@@ -19,36 +19,45 @@ class Icicle extends koto.Base {
       description: 'The height of the chart.',
       value: 700,
       type: 'number',
+      units: 'px',
       category: 'Size',
       getter: function (){
-        // do something?
-        console.log('setting!');
+        // get value
+        console.log('getter');
         return this.value;
       },
       setter: function (newValue){
+        // Set something
+        console.log('setter');
         return newValue;
       }
     }, {
       name: 'width',
-      description: 'The height of the chart.',
+      description: 'The widthj of the chart.',
       value: 900,
+      units: 'px',
       type: 'number',
       category: 'Size'
     }, {
       name: 'transitionDuration',
-      description: 'The height of the chart.',
+      description: 'How long should it take to animate on click.',
       value: 750,
+      units: 'ms',
       type: 'number',
-      category: 'Size'
+      category: 'Animation'
     }, {
       name: 'introDuration',
-      description: 'The height of the chart.',
+      description: 'How long should it take to animate in.',
       value: 2000,
+      units: 'ms',
       type: 'number',
-      category: 'Size'
+      category: 'Animation'
     }, {
       name: 'colorRange',
-      value: ['#BBE491', '#FB8D34', '#E45621', '#73B0D7']
+      value: ['#BBE491', '#FB8D34', '#E45621', '#73B0D7'],
+      description: 'colors for categories',
+      type: 'colorArray',
+      category: 'Color'
     }].forEach(function (item) {
       _Chart.configs.set(item.name, item);
     });
@@ -157,7 +166,7 @@ class Icicle extends koto.Base {
     })
     .on('merge', function () {
       // boxes
-      this.selectAll('rect')
+      this.select('rect')
         .attr('x', function(d) { return _Chart.x(d.x); })
         .attr('y', function(d) { return _Chart.y(d.y); })
         .attr('width', function(d) { return _Chart.x(d.dx); })
@@ -166,7 +175,7 @@ class Icicle extends koto.Base {
 
       // over-under indicator
       if (_Chart._targetData) {
-        this.selectAll('path')
+        this.select('path')
           .style('fill', '#555')
           .style('opacity', 0)
           .attr({
@@ -185,7 +194,7 @@ class Icicle extends koto.Base {
       }
 
       // labels
-      this.selectAll('text')
+      this.select('text')
         .text(function (d) { return d.name ? d.name : d[d.length - 2]; })
         .attr('x', function(d) { return _Chart.x(d.x); })
         .attr('dx', _Chart._targetData ? 25 : 5)
@@ -205,7 +214,7 @@ class Icicle extends koto.Base {
         .duration(duration)
         .ease('linear')
         .delay(function (d) { return d.depth * duration; })
-        .selectAll('rect')
+        .select('rect')
         .attr('height', function(d) { return _Chart.y(d.dy); });
       
       // paths
@@ -225,7 +234,7 @@ class Icicle extends koto.Base {
         .duration(duration)
         .ease('linear')
         .delay(function (d) { return d.depth * duration; })
-        .selectAll('text')
+        .select('text')
         .style('opacity', function (d) {
           d.textLength = this.getComputedTextLength();
           return (d.textLength + 30) < _Chart.x(d.dx) ? 1 : 0;

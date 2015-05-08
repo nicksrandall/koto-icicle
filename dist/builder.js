@@ -5,31 +5,19 @@ AutoWidgets.register({
       columnNames: [{
         name: 'Name',
         type: 'string',
-        validation: function (row) { return row[0] === 'Moderate';}
+        validation: function (cell) { return cell === 'Moderate';}
       }, {
-        name: 'Col1',
-        type: 'string'
-        // validation: function () {}
+        name: 'Col1'
       }, {
-        name: 'Col2',
-        type: 'string'
-        // validation: function () {}
+        name: 'Col2'
       }, {
-        name: 'col3',
-        type: 'string'
-        // validation: function () {}
+        name: 'col3'
       }, {
-        name: 'col4',
-        type: 'string'
-        // validation: function () {}
+        name: 'col4'
       }, {
-        name: 'col5',
-        type: 'string'
-        // validation: function () {}
+        name: 'col5'
       }, {
-        name: 'col6',
-        type: 'string'
-        // validation: function () {}
+        name: 'col6'
       }],
       defaultValues: [
         ['Moderate','Cash',0.03],

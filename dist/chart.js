@@ -7,7 +7,7 @@ var _get = function get(object, property, receiver) { var desc = Object.getOwnPr
 var _inherits = function (subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; };
 
 (function (global, factory) {
-  typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('bower_components/d3/d3'), require('bower_components/Koto/dist/koto')) : typeof define === 'function' && define.amd ? define(['bower_components/d3/d3', 'bower_components/Koto/dist/koto'], factory) : global.koto.Icicle = factory(global.d3, global.koto);
+  typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('d3'), require('koto')) : typeof define === 'function' && define.amd ? define(['d3', 'koto'], factory) : global.koto.Icicle = factory(global.d3, global.koto);
 })(this, function (d3, koto) {
   'use strict';
 
@@ -831,36 +831,45 @@ var _inherits = function (subClass, superClass) { if (typeof superClass !== 'fun
         description: 'The height of the chart.',
         value: 700,
         type: 'number',
+        units: 'px',
         category: 'Size',
         getter: function getter() {
-          // do something?
-          console.log('setting!');
+          // get value
+          console.log('getter');
           return this.value;
         },
         setter: function setter(newValue) {
+          // Set something
+          console.log('setter');
           return newValue;
         }
       }, {
         name: 'width',
-        description: 'The height of the chart.',
+        description: 'The widthj of the chart.',
         value: 900,
+        units: 'px',
         type: 'number',
         category: 'Size'
       }, {
         name: 'transitionDuration',
-        description: 'The height of the chart.',
+        description: 'How long should it take to animate on click.',
         value: 750,
+        units: 'ms',
         type: 'number',
-        category: 'Size'
+        category: 'Animation'
       }, {
         name: 'introDuration',
-        description: 'The height of the chart.',
+        description: 'How long should it take to animate in.',
         value: 2000,
+        units: 'ms',
         type: 'number',
-        category: 'Size'
+        category: 'Animation'
       }, {
         name: 'colorRange',
-        value: ['#BBE491', '#FB8D34', '#E45621', '#73B0D7']
+        value: ['#BBE491', '#FB8D34', '#E45621', '#73B0D7'],
+        description: 'colors for categories',
+        type: 'colorArray',
+        category: 'Color'
       }].forEach(function (item) {
         _Chart.configs.set(item.name, item);
       });

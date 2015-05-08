@@ -1,8 +1,8 @@
 {
-  "name": "koto-starter",
+  "name": "koto.Icicle",
   "version": "0.0.3",
   "authors": [],
-  "description": "koto chart starter",
+  "description": "This is an Icicle Chart.",
   "main": "dist/chart.js",
   "moduleType": [
     "es6",
@@ -22,6 +22,6 @@
     "tests"
   ],
   "dependencies": {
-    "koto": "~0.0.17"
+    "koto": "~0.0.33"
   }
 }

@@ -1,4 +1,5 @@
-import koto from 'bower_components/Koto/dist/koto.js';
+import d3 from 'd3';
+import koto from 'koto';
 
 /**
  * Simple tooltip widget
