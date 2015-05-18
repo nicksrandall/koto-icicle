@@ -1,4 +1,5 @@
 var gulp = require('gulp');
+var cp = require('child_process');
 var $ = require('gulp-load-plugins')();
 const fs = require('fs');
 const del = require('del');
@@ -18,7 +19,6 @@ const git = require('gulp-git');
 const bump = require('gulp-bump');
 const filter = require('gulp-filter');
 const tag_version = require('gulp-tag-version');
-const changelog = require('conventional-changelog');
 
 const manifest = require('./package.json');
 const config = manifest.babelBoilerplateOptions;
@@ -231,25 +231,6 @@ function inc(importance) {
     .pipe(tag_version());
 }
 
-gulp.task('patch', function() { return inc('patch'); })
-gulp.task('minor', function() { return inc('minor'); })
-gulp.task('major', function() { return inc('major'); })
-gulp.task('changelog', function (cb) {
-  changelog({
-    repository: 'https://github.com/nicksrandall/kotojs',
-    version: require('./package.json').version,
-  }, function (err, log) {
-    fs.writeFileSync('CHANGELOG.md', log);
-    cb();
-  });
-});
-
-gulp.task('push', function (cb) {
-  gulp.src(['./CHANGELOG.md'])
-    .pipe(git.commit('updating changelog'))
-    .on('end', function () {
-      git.push('origin', 'master', {args: " --tags"}, function () {
-        cb();
-      })
-    });
-});
+gulp.task('patch', function() { return inc('patch'); });
+gulp.task('minor', function() { return inc('minor'); });
+gulp.task('major', function() { return inc('major'); });
