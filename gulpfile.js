@@ -1,6 +1,7 @@
 var gulp = require('gulp');
 var cp = require('child_process');
 var $ = require('gulp-load-plugins')();
+
 const fs = require('fs');
 const del = require('del');
 const glob = require('glob');
@@ -68,6 +69,7 @@ createLintTask('lint-src', ['src/**/*.js']);
 createLintTask('lint-test', ['test/**/*.js']);
 
 // Build two versions of the library
+// Build two versions of the library
 gulp.task('build', ['lint-src', 'clean'], function(done) {
   esperanto.bundle({
     base: 'src',
@@ -97,7 +99,7 @@ gulp.task('build', ['lint-src', 'clean'], function(done) {
         inSourceMap: destinationFolder + '/' + exportFileName + '.js.map',
       }))
       .pipe(gulp.dest(destinationFolder));
-      
+
       if (fs.existsSync('src/builder.js')) {
           $.file('builder.js', fs.readFileSync('src/builder.js'), { src: true })
             .pipe($.plumber())
@@ -138,7 +140,7 @@ gulp.task('browserify', function() {
     .pipe($.livereload());
 });
 
-gulp.task('coverage', ['lint-src', 'lint-test'], function(done) {
+gulp.task('coverage', ['jsdom', 'lint-src', 'lint-test'], function(done) {
   require('babel/register')({ modules: 'common' });
   gulp.src(['src/*.js'])
     .pipe($.istanbul({ instrumenter: isparta.Instrumenter }))
@@ -156,7 +158,7 @@ function test() {
 };
 
 // Lint and run our tests
-gulp.task('test', ['lint-src', 'lint-test'], function() {
+gulp.task('test', ['jsdom', 'lint-src', 'lint-test'], function() {
   require('babel/register')({ modules: 'common' });
   return test();
 });
@@ -173,12 +175,13 @@ const watchFiles = ['src/**/*', 'test/**/*', 'package.json', '**/.jshintrc', '.j
 gulp.task('watch', function() {
   gulp.watch(watchFiles, ['test']);
 });
+
 gulp.task('watch-build', function() {
-  gulp.watch(watchFiles, ['build']);
+  gulp.watch(watchFiles, ['test', 'build']);
 });
 
 // Set up a livereload environment for our spec runner
-gulp.task('test-browser', ['build-in-sequence'], function() {
+gulp.task('test-browser', ['jsdom', 'build-in-sequence'], function() {
   $.livereload.listen({port: 35729, host: 'localhost', start: true});
   return gulp.watch(watchFiles, ['build-in-sequence']);
 });
@@ -186,20 +189,53 @@ gulp.task('test-browser', ['build-in-sequence'], function() {
 // An alias of test
 gulp.task('default', ['test']);
 
-gulp.task('serve', ['watch'], function() {
-	gulp.watch(['demo/**/*.*', 'dist/*.js'], ['demo']);
-	connect.server({
-		root: ['demo', 'bower_components', 'dist'],
-		port: 1337,
-		livereload: true,
-	});
+gulp.task('serve', ['build', 'watch-build'], function() {
+  gulp.watch(['demo/**/*.*', 'dist/*.js'], ['demo']);
+  connect.server({
+    root: ['demo', 'bower_components', 'dist'],
+    port: 1337,
+    livereload: true,
+  });
 });
 
 gulp.task('demo', function () {
-	gulp.src('demo/*.html')
-		.pipe(connect.reload());
+  gulp.src('demo/*.html')
+    .pipe(connect.reload());
 });
 
+gulp.task('jsdom', function (done) {
+  var current;
+  var installCmd;
+  var version = manifest.jsdomVersions[
+
+    // Unfortunately, this is currently the only
+    // way to tell the difference between Node and iojs
+    /^v0/.test( process.version ) ? "node" : "iojs"
+  ];
+
+  try {
+    current = require( "jsdom/package.json" ).version;
+    if ( current === version ) {
+      console.log('current jsdom version is correct');
+      return done();
+    }
+  } catch ( e ) {}
+
+  // Use npm on the command-line
+  // There is no local npm
+  installCmd = cp.exec('npm install jsdom@' + version, function (error, stdout, stderr) {
+   if (error) {
+     console.log(error.stack);
+     console.log('Error code: '+error.code);
+     console.log('Signal received: '+error.signal);
+   }
+   console.log('jsdom was install successfully!');
+   console.log('Child Process STDOUT: '+stdout);
+   console.log('Child Process STDERR: '+stderr);
+ });
+
+ installCmd.on('exit', done);
+});
 
 /**
  * Bumping version number and tagging the repository with it.
@@ -231,6 +267,6 @@ function inc(importance) {
     .pipe(tag_version());
 }
 
-gulp.task('patch', function() { return inc('patch'); });
-gulp.task('minor', function() { return inc('minor'); });
-gulp.task('major', function() { return inc('major'); });
+gulp.task('patch', function() { return inc('patch'); })
+gulp.task('minor', function() { return inc('minor'); })
+gulp.task('major', function() { return inc('major'); })
