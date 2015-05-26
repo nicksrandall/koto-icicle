@@ -131,7 +131,7 @@ gulp.task('build', ['lint-src', 'clean'], function(done) {
 });
 
 // Bundle our app for our unit tests
-gulp.task('browserify', function() {
+gulp.task('browserify', function(done) {
   var testFiles = glob.sync('./test/unit/**/*');
   var allFiles = ['./test/setup/browserify.js'].concat(testFiles);
   var bundler = browserify(allFiles);
@@ -148,7 +148,7 @@ gulp.task('browserify', function() {
     .pipe($.plumber())
     .pipe(source('./tmp/__spec-build.js'))
     .pipe(gulp.dest(''))
-    .pipe($.livereload());
+    .pipe($.livereload())
 });
 
 gulp.task('coverage', ['jsdom', 'lint-src', 'lint-test'], function(done) {
@@ -166,7 +166,8 @@ gulp.task('coverage', ['jsdom', 'lint-src', 'lint-test'], function(done) {
 function test() {
   // return gulp.src(['test/setup/node.js', 'test/unit/**/*.js'], {read: false})
   //   .pipe($.mocha({reporter: 'dot', globals: config.mochaGlobals}));
-  return gulp.src('test/runner.html')
+  gulp
+  return gulp.src('test/headless.html')
     .pipe(mochaPhantomJS({reporter: 'dot', mocha: { globals: config.mochaGlobals} }));
 
 };

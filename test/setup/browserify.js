@@ -9,7 +9,6 @@ global.onload = function() {
   global.mocha.globals(config.mochaGlobals);
   
   if (global.mochaPhantomJS) {
-    console.log('mocha-phantom');
     global.mochaPhantomJS.run();
   } else {
     global.mocha.run();
