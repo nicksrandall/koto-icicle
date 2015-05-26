@@ -1,5 +1,5 @@
 {
-  "name": "koto.icicle",
+  "name": "koto-icicle",
   "version": "0.0.4",
   "description": "A koto chart written in ES6",
   "main": "dist/chart.js",
@@ -87,6 +87,8 @@
     "iojs": "5.3.0"
   },
   "dependencies": {
-    "koto": "^0.0.40"
+    "gulp-mocha-phantomjs": "^0.6.1",
+    "koto": "0.0.47",
+    "koto-tooltip": "0.0.5"
   }
 }

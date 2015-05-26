@@ -1,14 +1,10 @@
 var _classCallCheck = function (instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } };
 
-var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
-var _get = function get(object, property, receiver) { var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
-
 var _inherits = function (subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; };
 
 (function (global, factory) {
-  typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('d3'), require('koto'), require('KotoTooltip')) : typeof define === 'function' && define.amd ? define(['d3', 'koto', 'KotoTooltip'], factory) : global.KotoIcicle = factory(global.d3, global.koto, global.KotoTooltip);
-})(this, function (d3, koto, KotoTooltip) {
+  typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('d3'), require('koto'), require('koto-tooltip')) : typeof define === 'function' && define.amd ? define(['d3', 'koto', 'koto-tooltip'], factory) : global.KotoIcicle = factory(global.d3, global.Koto, global.KotoTooltip);
+})(this, function (d3, Koto, KotoTooltip) {
   'use strict';
 
   /**
@@ -196,11 +192,11 @@ var _inherits = function (subClass, superClass) { if (typeof superClass !== 'fun
     category: 'Color'
   }];
 
-  var Icicle = (function (_koto$Base) {
+  var Icicle = (function (_Koto) {
     function Icicle(selection) {
       _classCallCheck(this, Icicle);
 
-      _get(Object.getPrototypeOf(Icicle.prototype), 'constructor', this).call(this, selection);
+      _Koto.call(this, selection);
       var _Chart = this;
 
       // load configs
@@ -242,6 +238,7 @@ var _inherits = function (subClass, superClass) { if (typeof superClass !== 'fun
       this._tooltipRect = this._tooltip._appends.append('rect');
       this._tooltipLabel = this._tooltip._appends.append('text').style('font-family', 'Open Sans');
 
+      console.log(Koto, this._tooltip);
       this._tooltip.trigger('draw');
       this._tooltip.trigger('remove');
 
@@ -480,46 +477,39 @@ var _inherits = function (subClass, superClass) { if (typeof superClass !== 'fun
       }
     }
 
-    _inherits(Icicle, _koto$Base);
+    _inherits(Icicle, _Koto);
 
-    _createClass(Icicle, [{
-      key: 'transform',
-      value: function transform(data) {
-        this.max = d3.max(data, function (row) {
-          return row.length;
-        });
-        return hierarchy().maxLength(this.max).entries(data);
-      }
-    }, {
-      key: 'targetData',
-      value: function targetData(data) {
-        this._targetData = hierarchy().maxLength(this.max).entries(data);
+    Icicle.prototype.transform = function transform(data) {
+      this.max = d3.max(data, function (row) {
+        return row.length;
+      });
+      return hierarchy().maxLength(this.max).entries(data);
+    };
 
-        this._tooltipRect2 = this._tooltip._appends.append('rect');
-        this._tooltipLabel2 = this._tooltip._appends.append('text').style('font-family', 'Open Sans');
-        return this;
-      }
-    }, {
-      key: 'preDraw',
-      value: function preDraw(data) {
-        this.x.range([0, this.config('width')]);
-        this.y.range([0, this.config('height')]);
-        this.rootName = data[0].name;
+    Icicle.prototype.targetData = function targetData(data) {
+      this._targetData = hierarchy().maxLength(this.max).entries(data);
 
-        var level1 = data[0].children.map(function (child) {
-          return child.name;
-        });
-        level1.push(this.rootName);
-        this.color.range(this.config('colorRange')).domain(level1);
-      }
-    }]);
+      this._tooltipRect2 = this._tooltip._appends.append('rect');
+      this._tooltipLabel2 = this._tooltip._appends.append('text').style('font-family', 'Open Sans');
+      return this;
+    };
+
+    Icicle.prototype.preDraw = function preDraw(data) {
+      this.x.range([0, this.config('width')]);
+      this.y.range([0, this.config('height')]);
+      this.rootName = data[0].name;
+
+      var level1 = data[0].children.map(function (child) {
+        return child.name;
+      });
+      level1.push(this.rootName);
+      this.color.range(this.config('colorRange')).domain(level1);
+    };
 
     return Icicle;
-  })(koto.Base);
+  })(Koto);
 
-  koto.Icicle = Icicle;
-
-  var chart = koto.Icicle;
+  var chart = Icicle;
 
   return chart;
 });

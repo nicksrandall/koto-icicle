@@ -14,6 +14,7 @@ const browserify = require('browserify');
 const runSequence = require('run-sequence');
 const source = require('vinyl-source-stream');
 const connect = require('gulp-connect');
+const mochaPhantomJS = require('gulp-mocha-phantomjs');
 
 //tag
 const git = require('gulp-git');
@@ -89,7 +90,17 @@ gulp.task('build', ['lint-src', 'clean'], function(done) {
     $.file(exportFileName + '.js', res.code, { src: true })
       .pipe($.plumber())
       .pipe($.sourcemaps.init({ loadMaps: true }))
-      .pipe($.babel({ blacklist: ['useStrict'] }))
+      .pipe($.babel({
+        blacklist: ['useStrict'],
+        loose: [
+          'es6.forOf',
+          'es6.classes',
+          'es6.spread',
+          'es6.destructuring',
+          'es6.properties.computed',
+          'es6.templateLiterals'
+        ]
+      }))
       .pipe($.sourcemaps.write('./', {addComment: false}))
       .pipe(gulp.dest(destinationFolder))
       .pipe($.filter(['*', '!**/*.js.map']))
@@ -153,8 +164,11 @@ gulp.task('coverage', ['jsdom', 'lint-src', 'lint-test'], function(done) {
 });
 
 function test() {
-  return gulp.src(['test/setup/node.js', 'test/unit/**/*.js'], {read: false})
-    .pipe($.mocha({reporter: 'dot', globals: config.mochaGlobals}));
+  // return gulp.src(['test/setup/node.js', 'test/unit/**/*.js'], {read: false})
+  //   .pipe($.mocha({reporter: 'dot', globals: config.mochaGlobals}));
+  return gulp.src('test/runner.html')
+    .pipe(mochaPhantomJS({reporter: 'dot', mocha: { globals: config.mochaGlobals} }));
+
 };
 
 // Lint and run our tests

@@ -22,7 +22,7 @@
     "tests"
   ],
   "dependencies": {
-    "koto": "~0.0.40",
-    "koto.tooltip": "~0.0.2"
+    "koto": "~0.0.47",
+    "koto-tooltip": "~0.0.5"
   }
 }

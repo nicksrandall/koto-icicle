@@ -88,6 +88,6 @@ var target = [
   ['Moderate','Fixed Income','Fixed Income Alts','MLPs','GMLPX',0.01]
 ];
 
-var icicle = new koto.Icicle(d3.select('#chart'));
-// icicle.targetData(target);
+var icicle = new KotoIcicle(d3.select('#chart'));
+icicle.targetData(target);
 icicle.draw(model);

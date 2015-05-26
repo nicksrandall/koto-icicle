@@ -1,22 +1,34 @@
+var setup = require('./setup');
 var jsdom = require('jsdom');
 
-// Setup a virtual dom to test dom manipulation.
-global.document = jsdom.jsdom();
+var doc = jsdom.jsdom('<div id="test"><svg><g id="svg"></g></svg></div>');
+
 // Monkey-patch createRange support to JSDOM.
-global.document.createRange = function() {
+doc.createRange = function() {
   return {
     selectNode: function() {},
     createContextualFragment: jsdom.jsdom
   };
 };
-global.window = global.document.parentWindow;
 
-// global.d3 = require('d3');
-// global.koto = require('koto');
+var sandbox = {
+  document: doc,
+  window: doc.defaultView,
+  setTimeout: setTimeout,
+  clearTimeout: clearTimeout,
+  Date: Date // so we can override Date.now in tests, and use deepEqual
+};
 
+for (var key in sandbox) {
+  global[key] = sandbox[key];
+}
+
+global.d3 = require('d3');
+global.Koto = require('koto');
+global.KotoTooltip = require('koto-tooltip');
 global.chai = require('chai');
 global.sinon = require('sinon');
 global.chai.use(require('sinon-chai'));
 
 require('babel/register');
-require('./setup')();
+setup();

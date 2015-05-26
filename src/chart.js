@@ -1,6 +1,6 @@
 import d3 from 'd3';
-import koto from 'koto';
-import KotoTooltip from 'KotoTooltip';
+import Koto from 'koto';
+import KotoTooltip from 'koto-tooltip';
 import hierarchy from './hierarchy';
 import configs from './configs';
 
@@ -10,7 +10,7 @@ import configs from './configs';
  * To see this chart run `gulp connect` and then navigate to localhost:1337.
  * The js file that renders this chart is found `www > js > main.js`
  */
-class Icicle extends koto.Base {
+class Icicle extends Koto {
 	constructor(selection) {
     super(selection);
     var _Chart = this;
@@ -312,6 +312,4 @@ class Icicle extends koto.Base {
   }
 }
 
-koto.Icicle = Icicle;
-
-export default koto.Icicle;
+export default Icicle;

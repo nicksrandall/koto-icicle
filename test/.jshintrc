@@ -55,7 +55,7 @@
   "wsh"           : false,
   "yui"           : false,
   "globals": {
-    "koto": true,
+    "Koto": true,
     "d3": true,
     "console": true,
     "sinon": true,
