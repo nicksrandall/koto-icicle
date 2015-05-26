@@ -172,7 +172,7 @@ function test() {
 };
 
 // Lint and run our tests
-gulp.task('test', ['jsdom', 'lint-src', 'lint-test'], function() {
+gulp.task('test', ['jsdom', 'lint-src', 'lint-test', 'browserify'], function() {
   require('babel/register')({ modules: 'common' });
   return test();
 });

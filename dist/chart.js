@@ -1,6 +1,6 @@
-var _classCallCheck = function (instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } };
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-var _inherits = function (subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; };
+function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
 
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('d3'), require('koto'), require('koto-tooltip')) : typeof define === 'function' && define.amd ? define(['d3', 'koto', 'koto-tooltip'], factory) : global.KotoIcicle = factory(global.d3, global.Koto, global.KotoTooltip);
@@ -238,7 +238,6 @@ var _inherits = function (subClass, superClass) { if (typeof superClass !== 'fun
       this._tooltipRect = this._tooltip._appends.append('rect');
       this._tooltipLabel = this._tooltip._appends.append('text').style('font-family', 'Open Sans');
 
-      console.log(Koto, this._tooltip);
       this._tooltip.trigger('draw');
       this._tooltip.trigger('remove');
 
@@ -312,21 +311,11 @@ var _inherits = function (subClass, superClass) { if (typeof superClass !== 'fun
         // over-under indicator
         if (_Chart._targetData) {
           this.select('path').style('fill', '#555').style('opacity', 0).attr({
-            d: (function (_d) {
-              function d(_x) {
-                return _d.apply(this, arguments);
-              }
-
-              d.toString = function () {
-                return _d.toString();
-              };
-
-              return d;
-            })(function (d) {
+            d: function d(_d) {
               var symbol = d3.svg.symbol();
-              var gen = d.value > d.target ? symbol.type('triangle-up') : d.value < d.target ? symbol.type('triangle-down') : symbol.type('triangle-down');
+              var gen = _d.value > _d.target ? symbol.type('triangle-up') : _d.value < _d.target ? symbol.type('triangle-down') : symbol.type('triangle-down');
               return gen();
-            }),
+            },
             transform: function transform(d) {
               var left = _Chart.x(d.x) + 15;
               var top = _Chart.y(d.y) + 15;
@@ -415,13 +404,13 @@ var _inherits = function (subClass, superClass) { if (typeof superClass !== 'fun
       }
 
       // check to see if node is child
-      function isChild(_x2, _x3) {
+      function isChild(_x, _x2) {
         var _again = true;
 
         _function: while (_again) {
+          var thing = _x,
+              relative = _x2;
           _again = false;
-          var thing = _x2,
-              relative = _x3;
 
           if (thing === relative) {
             return true;
@@ -429,8 +418,8 @@ var _inherits = function (subClass, superClass) { if (typeof superClass !== 'fun
           if (!thing.parent) {
             return false;
           }
-          _x2 = thing.parent;
-          _x3 = relative;
+          _x = thing.parent;
+          _x2 = relative;
           _again = true;
           continue _function;
         }
@@ -455,13 +444,13 @@ var _inherits = function (subClass, superClass) { if (typeof superClass !== 'fun
       }
 
       // get parents name - for color
-      function getParent(_x4, _x5) {
+      function getParent(_x3, _x4) {
         var _again2 = true;
 
         _function2: while (_again2) {
+          var d = _x3,
+              rootName = _x4;
           _again2 = false;
-          var d = _x4,
-              rootName = _x5;
 
           if (!d.parent) {
             return d.name;
@@ -469,8 +458,8 @@ var _inherits = function (subClass, superClass) { if (typeof superClass !== 'fun
           if (d.parent.name === rootName) {
             return d.name;
           }
-          _x4 = d.parent;
-          _x5 = rootName;
+          _x3 = d.parent;
+          _x4 = rootName;
           _again2 = true;
           continue _function2;
         }
