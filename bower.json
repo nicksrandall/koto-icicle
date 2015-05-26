@@ -1,6 +1,6 @@
 {
   "name": "koto.icicle",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "authors": [],
   "description": "This is an Icicle Chart.",
   "main": "dist/chart.js",
