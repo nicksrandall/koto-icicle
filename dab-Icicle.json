@@ -1,0 +1,22 @@
+{
+  "name": "Icicle",
+  "version": "0.0.8",
+  "github": "koto-icicle",
+  "description": "This is an icicle chart.",
+  "tags": [
+    "icicle",
+    "finance",
+    "over",
+    "under"
+  ],
+  "categories": [
+    "Other Charts"
+  ],
+  "file": "media/base.svg",
+  "video": "media/widget.mp4",
+  "_id": "556cba0947fa83ea7a43c2f9",
+  "__v": 0,
+  "svgURL": "6642d1a06ddb02ee703ce27455ab082d.svg",
+  "thumbURL": "1d864efcb4e889a0bf743c78ac0b3b3f.png",
+  "videoURL": "1d864efcb4e889a0bf743c78ac0b3b3f.mp4"
+}

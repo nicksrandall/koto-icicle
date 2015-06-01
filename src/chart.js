@@ -55,6 +55,10 @@ class Icicle extends Koto {
     
     this._tooltip.trigger('draw');
     this._tooltip.trigger('remove');
+
+    this.on('external:click', function (d) {
+      click(d);
+    });
     
     // Setup Layers
     var icicle = this.layer('icicle', this._group, {

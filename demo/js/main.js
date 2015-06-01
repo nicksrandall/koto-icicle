@@ -89,5 +89,30 @@ var target = [
 ];
 
 var icicle = new KotoIcicle(d3.select('#chart'));
-icicle.targetData(target);
-icicle.draw(model);
+icicle.c({
+  width: 500,
+  height: 500
+});
+
+(function script() {
+  icicle.targetData(target);
+  icicle.draw(model);
+  setTimeout(function () {
+    var e = document.createEvent('UIEvents');
+    e.initUIEvent('mouseover', true, true /* ... */);
+    document.querySelectorAll('g')[15].dispatchEvent(e);
+  }, 1500);
+  setTimeout(function () {
+    var e = document.createEvent('UIEvents');
+    e.initUIEvent('click', true, true /* ... */);
+    var e2 = document.createEvent('UIEvents');
+    e2.initUIEvent('mouseout', true, true /* ... */);
+    document.querySelectorAll('g')[15].dispatchEvent(e2);
+    document.querySelectorAll('g')[7].dispatchEvent(e);
+  }, 2000);
+  setTimeout(function () {
+    var e = document.createEvent('UIEvents');
+    e.initUIEvent('click', true, true /* ... */);
+    document.querySelectorAll('g')[2].dispatchEvent(e);
+  }, 3000);
+}())

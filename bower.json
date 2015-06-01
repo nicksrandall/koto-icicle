@@ -3,7 +3,7 @@
   "version": "0.0.8",
   "authors": [],
   "description": "This is an Icicle Chart.",
-  "main": "dist/chart.js",
+  "main": ["dist/chart.js","dist/builder.js"],
   "moduleType": [
     "es6",
     "globals"
